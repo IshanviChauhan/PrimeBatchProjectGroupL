@@ -5,12 +5,6 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
-// Import routes
-import authRoutes from './routes/auth';
-import userRoutes from './routes/users';
-import postRoutes from './routes/posts';
-import communityRoutes from './routes/community';
-
 dotenv.config();
 
 const app: Application = express();
@@ -39,18 +33,69 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/abes-comm
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/posts', postRoutes);
-app.use('/api/community', communityRoutes);
-
-// Health check endpoint
+// Basic routes
 app.get('/api/health', (req, res) => {
   res.status(200).json({ 
     status: 'OK', 
-    message: 'ABES Community API is running',
+    message: 'Programming Pathshala API is running',
     timestamp: new Date().toISOString()
+  });
+});
+
+// API routes for the frontend
+app.post('/api/auth/register', (req, res) => {
+  const { name, email, whatsapp, password } = req.body;
+  
+  // Basic validation
+  if (!name || !email || !whatsapp || !password) {
+    return res.status(400).json({ 
+      error: 'All fields are required',
+      fields: ['name', 'email', 'whatsapp', 'password']
+    });
+  }
+
+  // TODO: Implement user registration logic
+  res.status(201).json({ 
+    message: 'Registration successful! Welcome to Programming Pathshala',
+    user: { name, email }
+  });
+});
+
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  // Basic validation
+  if (!email || !password) {
+    return res.status(400).json({ 
+      error: 'Email and password are required'
+    });
+  }
+
+  // TODO: Implement user login logic
+  res.status(200).json({ 
+    message: 'Login successful!',
+    user: { email }
+  });
+});
+
+// Programming challenge routes
+app.get('/api/challenges/daily', (req, res) => {
+  res.status(200).json({
+    challenge: {
+      id: 1,
+      title: "Two Sum Problem",
+      description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+      difficulty: "Easy",
+      points: 10
+    }
+  });
+});
+
+app.get('/api/user/points', (req, res) => {
+  res.status(200).json({
+    totalPoints: 150,
+    todayPoints: 10,
+    streak: 7
   });
 });
 
@@ -69,8 +114,9 @@ app.use('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🚀 Programming Pathshala API is running on port ${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📡 Frontend URL: ${process.env.CORS_ORIGIN || 'http://localhost:3000'}`);
 });
 
 export default app;

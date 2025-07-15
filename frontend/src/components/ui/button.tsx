@@ -17,12 +17,12 @@ export const Button = ({
   const baseClasses = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background';
   
   const variants = {
-    default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-    destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-    outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
-    secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-    ghost: 'hover:bg-accent hover:text-accent-foreground',
-    link: 'underline-offset-4 hover:underline text-primary'
+    default: 'bg-indigo-600 text-white hover:bg-indigo-700',
+    destructive: 'bg-red-600 text-white hover:bg-red-700',
+    outline: 'border border-slate-600 bg-transparent text-white hover:bg-slate-700',
+    secondary: 'bg-slate-600 text-white hover:bg-slate-700',
+    ghost: 'hover:bg-slate-700 text-white',
+    link: 'underline-offset-4 hover:underline text-indigo-400'
   };
 
   const sizes = {
@@ -33,8 +33,12 @@ export const Button = ({
 
   const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
 
-  if (asChild) {
-    return React.cloneElement(children, { className: classes, ...props });
+  if (asChild && React.isValidElement(children)) {
+    const existingClassName = (children.props as any)?.className || '';
+    return React.cloneElement(children as React.ReactElement<any>, { 
+      className: `${existingClassName} ${classes}`.trim(),
+      ...props 
+    });
   }
 
   return (

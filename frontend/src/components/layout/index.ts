@@ -1,3 +1,3 @@
 // Export all layout components
-export * from './Navbar';
-export * from './Footer';
+export { default as Navbar } from './Navbar';
+export { Footer } from './Footer';

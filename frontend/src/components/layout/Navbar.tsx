@@ -1,7 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  currentPage?: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home' }) => {
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,3 +83,5 @@ export const Navbar: React.FC = () => {
     </nav>
   );
 };
+
+export default Navbar;
