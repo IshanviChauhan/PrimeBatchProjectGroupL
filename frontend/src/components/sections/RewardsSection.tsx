@@ -7,68 +7,85 @@ const RewardsSection: React.FC = () => {
     {
       title: 'Zomato Coupon Code',
       points: 1000,
-      imageUrl: '/images/rewards/zomato-logo.png',
+      imageUrl: '/zomato.svg',
       alt: 'Zomato Logo'
     },
     {
       title: '30 Days Free Trial of Renaissance',
       points: 2000,
-      imageUrl: '/images/rewards/renaissance-logo.png',
+      imageUrl: '/renaissance.svg',
       alt: 'Renaissance Trial'
     },
     {
       title: 'Code Till Infinity T-shirt',
       points: 4000,
-      imageUrl: '/images/rewards/tshirt.png',
+      imageUrl: '/Tshirt.svg',
       alt: 'Programming T-shirt'
     },
     {
       title: 'Laptop Bag',
       points: 7000,
-      imageUrl: '/images/rewards/laptop-bag.png',
+      imageUrl: '/Laptopbag.svg',
       alt: 'Laptop Bag'
     },
     {
       title: 'Wireless Boat Earphone',
       points: 10000,
-      imageUrl: '/images/rewards/earphones.png',
+      imageUrl: '/Earphones.svg',
       alt: 'Wireless Earphones'
     },
     {
       title: 'Scholarship for TFP',
       points: 14000,
-      imageUrl: '/images/rewards/scholarship.png',
+      imageUrl: '/TFPscholarship.svg',
       alt: 'Scholarship Certificate'
     }
   ];
 
   return (
     <section className="py-16 bg-slate-800">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-8">
         <h2 className="text-4xl font-bold text-center mb-16 text-white">What will you win?</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {rewards.map((reward, index) => (
-            <Card key={index} className="bg-white text-black">
-              <CardHeader className="text-center">
-                <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-2xl flex items-center justify-center overflow-hidden">
+            <Card key={index} className="bg-white text-black h-85 flex flex-col relative">
+              <CardHeader className="text-center p-2 flex-1 flex flex-col relative">
+                <div className="p-6 flex items-center justify-center rounded-lg mb-4" style={{ backgroundColor: '#f1f5f9'}}>
                   <img 
                     src={reward.imageUrl}
                     alt={reward.alt}
-                    className="w-16 h-16 object-contain"
+                    className="w-auto h-34 object-contain"
                     onError={(e) => {
-                      // Fallback to placeholder if image fails to load
-                      e.currentTarget.src = '/api/placeholder/64/64';
+                      // Hide broken image and show fallback icon
+                      const target = e.currentTarget;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent && !parent.querySelector('.fallback-icon')) {
+                        const fallback = document.createElement('div');
+                        fallback.className = 'fallback-icon w-16 h-16 flex items-center justify-center text-4xl';
+                        fallback.textContent = '🎁';
+                        parent.appendChild(fallback);
+                      }
                     }}
                   />
                 </div>
-                <CardTitle className="text-lg text-black">{reward.title}</CardTitle>
-                <div className="bg-black text-white px-4 py-2 rounded-full inline-flex items-center mt-4">
-                  {reward.points} 🪙
+                <div className="flex items-center justify-between mb-4">
+                  <CardTitle className="text-lg text-black flex-1">{reward.title}</CardTitle>
+                  <div className="bg-black text-white px-4 py-2 rounded-full inline-flex items-center ml-2">
+                    {reward.points}&nbsp;<img src="/coin.svg" alt="coin" className="w-4 h-4" />
+                  </div>
                 </div>
-                <Button className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white">
-                  Redeem Now
-                </Button>
+                <div className="mt-auto">
+                  <Button 
+                    className="w-full text-white cursor-pointer transition-colors duration-200" 
+                    style={{ backgroundColor: '#7997e1' }}
+                    onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#3940A0'}
+                    onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#7997e1'}
+                  >
+                    Redeem Now
+                  </Button>
+                </div>
               </CardHeader>
             </Card>
           ))}

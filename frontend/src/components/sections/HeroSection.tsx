@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -7,6 +7,7 @@ interface HeroSectionProps {
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onSubmit }) => {
+  const [activeTab, setActiveTab] = useState<'signup' | 'login'>('signup');
   return (
     <section className="relative px-4 py-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="container mx-auto">
@@ -44,72 +45,137 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSubmit }) => {
             </div>
           </div>
           
-          {/* Right Side - Sign Up Form */}
+          {/* Right Side - Sign Up/Login Form */}
           <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl">
             <div className="flex mb-6">
-              <Button className="flex-1 rounded-lg" size="lg">
+              <Button 
+                className={`flex-1 rounded-lg transition-all duration-200 ${
+                  activeTab === 'signup' 
+                    ? 'bg-indigo-600 text-white hover:bg-indigo-700' 
+                    : 'bg-transparent text-gray-300 hover:bg-slate-700'
+                }`}
+                size="lg"
+                onClick={() => setActiveTab('signup')}
+              >
                 Sign Up
               </Button>
               <Button 
-                variant="outline" 
-                className="flex-1 ml-2 rounded-lg" 
+                className={`flex-1 ml-2 rounded-lg transition-all duration-200 ${
+                  activeTab === 'login' 
+                    ? 'bg-indigo-600 text-white hover:bg-indigo-700' 
+                    : 'bg-transparent text-gray-300 hover:bg-slate-700'
+                }`}
                 size="lg"
+                onClick={() => setActiveTab('login')}
               >
                 Log In
               </Button>
             </div>
-            
-            <form onSubmit={onSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-white">Name</label>
-                <Input 
-                  name="name"
-                  placeholder="Enter full name" 
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2 text-white">Email Address</label>
-                <Input 
-                  name="email"
-                  type="email" 
-                  placeholder="Enter email address" 
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2 text-white">WhatsApp Number</label>
-                <div className="flex">
-                  <div className="flex items-center bg-slate-700 border border-slate-600 rounded-l-md px-3">
-                    <span className="text-2xl">🇮🇳</span>
-                  </div>
+
+            {/* Sign Up Form */}
+            {activeTab === 'signup' && (
+              <form onSubmit={onSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-white">Name</label>
                   <Input 
-                    name="whatsapp"
-                    placeholder="Enter 10-digit number" 
-                    className="rounded-l-none border-l-0"
+                    name="name"
+                    placeholder="Enter full name" 
                     required
                   />
                 </div>
-                <p className="text-xs text-gray-400 mt-1">We have a strict no-spam policy</p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2 text-white">Create Password</label>
-                <Input 
-                  name="password"
-                  type="password" 
-                  placeholder="Enter your 6-character password" 
-                  minLength={6}
-                  required
-                />
-              </div>
-              
-              <Button type="submit" className="w-full" size="lg">
-                Join the Challenge 🚀
-              </Button>
-            </form>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-white">Email Address</label>
+                  <Input 
+                    name="email"
+                    type="email" 
+                    placeholder="Enter email address" 
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-white">WhatsApp Number</label>
+                  <div className="flex">
+                    <div className="flex items-center bg-slate-700 border border-slate-600 rounded-l-md px-3">
+                      <span className="text-2xl">🇮🇳</span>
+                    </div>
+                    <Input 
+                      name="whatsapp"
+                      placeholder="Enter 10-digit number" 
+                      className="rounded-l-none border-l-0"
+                      required
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">We have a strict no-spam policy</p>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-white">Create Password</label>
+                  <Input 
+                    name="password"
+                    type="password" 
+                    placeholder="Enter your 6-character password" 
+                    minLength={6}
+                    required
+                  />
+                </div>
+                
+                <Button type="submit" className="w-full" size="lg">
+                  Join the Challenge 🚀
+                </Button>
+              </form>
+            )}
+
+            {/* Login Form */}
+            {activeTab === 'login' && (
+              <form onSubmit={onSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-white">Email Address</label>
+                  <Input 
+                    name="email"
+                    type="email" 
+                    placeholder="Enter email address" 
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-white">Password</label>
+                  <Input 
+                    name="password"
+                    type="password" 
+                    placeholder="Enter your password" 
+                    required
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between text-sm">
+                  <label className="flex items-center text-gray-300">
+                    <input type="checkbox" className="mr-2 rounded" />
+                    Remember me
+                  </label>
+                  <a href="#" className="text-indigo-400 hover:text-indigo-300">
+                    Forgot password?
+                  </a>
+                </div>
+                
+                <Button type="submit" className="w-full" size="lg">
+                  Log In 🚀
+                </Button>
+                
+                <div className="text-center text-sm text-gray-400">
+                  Don't have an account?{' '}
+                  <button 
+                    type="button"
+                    onClick={() => setActiveTab('signup')}
+                    className="text-indigo-400 hover:text-indigo-300"
+                  >
+                    Sign up here
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
